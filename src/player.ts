@@ -19,7 +19,6 @@ class Player {
     MusicQueue.getInstance()
       .getUpdate()
       .subscribe((data) => {
-        console.log('Update!!!', data);
         const connection = getVoiceConnection(data.newValue.guildId);
 
         if (!connection) {
@@ -39,8 +38,6 @@ class Player {
   }
 
   public playMusicQueue(state: AudioPlayerStatus) {
-    console.log('chicken', MusicQueue.getInstance().getMusicQueue());
-
     if (!MusicQueue.getInstance().getMusicQueue().length) {
       return;
     }
