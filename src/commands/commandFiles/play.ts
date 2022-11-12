@@ -1,3 +1,4 @@
+import { joinVoiceChannel } from '@discordjs/voice';
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import MusicQueue from '../../musicQueue';
 
@@ -14,36 +15,33 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   const url = interaction.options.data[0].value as string;
 
-  if (!interaction.member) {
+  if (!interaction.member || !interaction.guildId) {
     await interaction.reply('Something went wrong... Errorcode: 1');
     return;
   }
 
+  const channelId = interaction.guild?.members.cache.get(
+    interaction.member.user.id
+  )?.voice.channelId;
+
+  if (!channelId) {
+    await interaction.reply('Please join a voice channel');
+    return;
+  }
+
+  joinVoiceChannel({
+    channelId: channelId,
+    guildId: interaction.guild.id,
+    adapterCreator: interaction.guild.voiceAdapterCreator,
+    selfDeaf: false
+  });
+
   //Check if already playing, if we're already playing, then do nothing
   MusicQueue.getInstance().pushSongToQueue({
     url,
-    userId: interaction.member.user.id
+    userId: interaction.member.user.id,
+    guildId: interaction.guildId
   });
 
   interaction.reply('Added song');
-
-  // const channelId = interaction.guild?.members.cache.get(
-  //   interaction.member.user.id
-  // )?.voice.channelId;
-
-  // if (!channelId) {
-  //   await interaction.reply('Please join a voice channel');
-  //   return;
-  // }
-
-  // joinVoiceChannel({
-  //   channelId: channelId,
-  //   guildId: interaction.guild.id,
-  //   adapterCreator: interaction.guild.voiceAdapterCreator,
-  //   selfDeaf: false
-  // });
-
-  // await interaction.reply('Finished');
-
-  //If not playing, connect to VC and start playing, once song finishes, pop the song from queue
 };
