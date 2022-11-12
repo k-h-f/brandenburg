@@ -37,6 +37,7 @@ class MusicQueue {
   }
 
   public getMusicQueue() {
+    this.musicQueue = this.musicQueue.filter((value) => value);
     return this.musicQueue;
   }
 

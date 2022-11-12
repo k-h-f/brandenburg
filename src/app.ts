@@ -73,7 +73,10 @@ MusicQueue.getInstance()
   });
 
 player.addListener('stateChange', (oldOne, newOne) => {
-  console.log(MusicQueue.getInstance().getMusicQueue());
+  if (!MusicQueue.getInstance().getMusicQueue().length) {
+    return;
+  }
+
   if (newOne.status == 'idle') {
     const stream = ytdl(MusicQueue.getInstance().getMusicQueue()[0].url, {
       filter: 'audioonly'
