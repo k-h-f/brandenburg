@@ -7,8 +7,6 @@ interface MusicRequest {
 }
 
 interface Target {
-  musicRequestArr: MusicRequest[];
-  key: any;
   newValue: MusicRequest;
 }
 
@@ -19,21 +17,12 @@ class MusicQueue {
 
   private constructor() {
     this.update = new Subject();
-    this.musicQueue = new Proxy([], {
-      set: (
-        musicRequestArr: MusicRequest[],
-        key: any,
-        newValue: MusicRequest
-      ) => {
-        musicRequestArr[key] = newValue;
-        this.update.next({ musicRequestArr, key, newValue });
-        return true;
-      }
-    });
+    this.musicQueue = [] as MusicRequest[];
   }
 
   public pushSongToQueue(data: MusicRequest) {
     this.musicQueue.push(data);
+    this.update.next({ newValue: data });
   }
 
   public getMusicQueue() {

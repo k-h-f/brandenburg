@@ -36,12 +36,13 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     selfDeaf: false
   });
 
-  //Check if already playing, if we're already playing, then do nothing
   MusicQueue.getInstance().pushSongToQueue({
     url,
     userId: interaction.member.user.id,
     guildId: interaction.guildId
   });
+
+  console.log('UPDARED LIST', MusicQueue.getInstance().getMusicQueue());
 
   interaction.reply('Added song');
 };

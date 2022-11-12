@@ -9,14 +9,7 @@ import './commands/deploy-commands';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { getConfig } from './getConfig';
 import EventHandler from './eventHandler';
-import MusicQueue from './musicQueue';
-import {
-  createAudioPlayer,
-  getVoiceConnection,
-  createAudioResource,
-  AudioPlayerStatus
-} from '@discordjs/voice';
-import ytdl from 'ytdl-core';
+import Player from './player';
 
 const DISCORD_TOKEN = getConfig().DISCORD_TOKEN;
 
@@ -33,61 +26,8 @@ const client = new Client({
 const eventHandler = new EventHandler(client);
 eventHandler.initEvents();
 
-const player = createAudioPlayer();
-
-MusicQueue.getInstance()
-  .getUpdate()
-  .subscribe((data) => {
-    // console.log(data.musicRequestArr);
-    //Check if we are already in a VC - If not, join VC, if we are, do nothing and return early
-    const connection = getVoiceConnection(data.newValue.guildId);
-
-    if (!connection) {
-      return;
-    }
-    connection.subscribe(player);
-
-    // if (musicRequestArr.length === 0) {
-    //   return;
-    // }
-
-    // if (player.state.status === AudioPlayerStatus.Playing) {
-    //   return;
-    // }
-
-    if (player.state.status === AudioPlayerStatus.Idle) {
-      const stream = ytdl(MusicQueue.getInstance().getMusicQueue()[0].url, {
-        filter: 'audioonly'
-      });
-      MusicQueue.getInstance().shiftSong();
-
-      const resource = createAudioResource(stream);
-
-      player.play(resource);
-    }
-
-    // console.log('playing');
-    //If we are not in a VC, connect to VC
-    //Start playing song in queue
-    //Once song is finished, pop the song from the queue and go to next one
-  });
-
-player.addListener('stateChange', (oldOne, newOne) => {
-  if (!MusicQueue.getInstance().getMusicQueue().length) {
-    return;
-  }
-
-  if (newOne.status == 'idle') {
-    const stream = ytdl(MusicQueue.getInstance().getMusicQueue()[0].url, {
-      filter: 'audioonly'
-    });
-    MusicQueue.getInstance().shiftSong();
-
-    const resource = createAudioResource(stream);
-
-    player.play(resource);
-  }
-});
+const player = new Player();
+player.subscribeToMusicQueue();
 
 // Login to Discord with your client's token
 client.login(DISCORD_TOKEN).catch((error) => {
