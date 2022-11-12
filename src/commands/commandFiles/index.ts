@@ -4,3 +4,4 @@
  */
 
 export * as commandslist from './commandslist';
+export * as play from './play';
