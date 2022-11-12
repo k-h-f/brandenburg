@@ -1,10 +1,4 @@
-import {
-  ChatInputCommandInteraction,
-  InternalDiscordGatewayAdapterCreator,
-  SelectMenuOptionBuilder,
-  SlashCommandBuilder
-} from 'discord.js';
-import { joinVoiceChannel } from '@discordjs/voice';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import MusicQueue from '../../musicQueue';
 
 export const data = new SlashCommandBuilder()
@@ -30,6 +24,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     url,
     userId: interaction.member.user.id
   });
+
   interaction.reply('Added song');
 
   // const channelId = interaction.guild?.members.cache.get(

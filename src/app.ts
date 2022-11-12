@@ -9,7 +9,6 @@ import './commands/deploy-commands';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { getConfig } from './getConfig';
 import EventHandler from './eventHandler';
-import { Observable } from 'rxjs';
 import MusicQueue from './musicQueue';
 
 const DISCORD_TOKEN = getConfig().DISCORD_TOKEN;

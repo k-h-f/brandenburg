@@ -15,7 +15,7 @@ class MusicQueue {
     this.musicQueue = new Proxy([], {
       set: (obj: MusicRequest[], prop: any, newval) => {
         obj[prop] = newval;
-
+        this.update.next({ obj, prop, newval });
         return true;
       }
     });
