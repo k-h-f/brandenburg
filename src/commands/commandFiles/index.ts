@@ -5,3 +5,5 @@
 
 export * as commandslist from './commandslist';
 export * as play from './play';
+export * as stop from './stop';
+export * as skip from './skip';

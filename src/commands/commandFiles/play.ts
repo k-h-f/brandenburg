@@ -1,5 +1,6 @@
 import { joinVoiceChannel } from '@discordjs/voice';
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import ytdl from 'ytdl-core';
 import MusicQueue from '../../musicQueue';
 
 export const data = new SlashCommandBuilder()
@@ -36,13 +37,16 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     selfDeaf: false
   });
 
+  const stream = ytdl(url, {
+    filter: 'audioonly'
+  });
+
   MusicQueue.getInstance().pushSongToQueue({
     url,
     userId: interaction.member.user.id,
-    guildId: interaction.guildId
+    guildId: interaction.guildId,
+    stream
   });
-
-  console.log('UPDARED LIST', MusicQueue.getInstance().getMusicQueue());
 
   interaction.reply('Added song');
 };

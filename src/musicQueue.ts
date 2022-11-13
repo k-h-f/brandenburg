@@ -1,13 +1,17 @@
 import { Subject } from 'rxjs';
+import internal, { Readable } from 'stream';
 
 interface MusicRequest {
   url: string;
   userId: string;
   guildId: string;
+  stream: internal.Readable;
+  //create a stream value here
 }
 
 interface Target {
   newValue: MusicRequest;
+  skip?: boolean;
 }
 
 class MusicQueue {
@@ -39,6 +43,10 @@ class MusicQueue {
       return;
     }
     this.musicQueue.shift();
+  }
+
+  public reset() {
+    this.musicQueue = [] as MusicRequest[];
   }
 
   public static getInstance() {
