@@ -16,6 +16,15 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   const url = interaction.options.data[0].value as string;
 
+  const ytRegexExp = new RegExp(
+    `(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$))`
+  );
+
+  if (!ytRegexExp.test(url)) {
+    interaction.reply('Invalid YouTube URL');
+    return;
+  }
+
   if (!interaction.member || !interaction.guildId) {
     await interaction.reply('Something went wrong... Errorcode: 1');
     return;
