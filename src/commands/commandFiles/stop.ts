@@ -23,4 +23,5 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   player.getPlayer().stop();
   connection.destroy();
   MusicQueue.getInstance().reset();
+  interaction.reply('Applying breaks - Stopping initiated');
 };

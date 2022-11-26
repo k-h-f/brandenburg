@@ -57,5 +57,5 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     stream
   });
 
-  interaction.reply('Added song');
+  interaction.reply(`Added ${url} to the queue`);
 };
