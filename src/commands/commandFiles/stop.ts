@@ -1,5 +1,6 @@
 import { getVoiceConnection } from '@discordjs/voice';
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { player } from '../../app';
 import MusicQueue from '../../musicQueue';
 
 export const data = new SlashCommandBuilder()
@@ -19,7 +20,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     return;
   }
 
+  player.getPlayer().stop();
   connection.destroy();
-  connection.removeAllListeners();
   MusicQueue.getInstance().reset();
 };

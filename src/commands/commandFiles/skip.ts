@@ -1,4 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import { player } from '../../app';
 import MusicQueue from '../../musicQueue';
 
 export const data = new SlashCommandBuilder()
@@ -6,8 +7,8 @@ export const data = new SlashCommandBuilder()
   .setDescription('Skips the current song being played');
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
-  MusicQueue.getInstance().getMusicQueue()[0].stream.destroy();
-  console.log('skip', MusicQueue.getInstance().getMusicQueue()[0].url);
+  player.getPlayer().stop();
+  MusicQueue.getInstance().shiftSong();
 
   interaction.reply('Skipping song');
 };

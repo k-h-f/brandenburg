@@ -4,8 +4,6 @@ import {
   createAudioResource,
   getVoiceConnection
 } from '@discordjs/voice';
-import internal from 'stream';
-import ytdl from 'ytdl-core';
 import MusicQueue from './musicQueue';
 
 class Player {
@@ -38,7 +36,6 @@ class Player {
     //Add this listener so that if the bot is already playing, we wait
     //for it to finish to continue playing a song
     this.player.addListener('stateChange', (_oldState, newState) => {
-      console.log('test');
       this.audioHandler(newState.status);
       if (newState.status === AudioPlayerStatus.Idle) {
         MusicQueue.getInstance().shiftSong();
@@ -56,10 +53,12 @@ class Player {
         MusicQueue.getInstance().getMusicQueue()[0].stream
       );
 
-      console.log('player', MusicQueue.getInstance().getMusicQueue()[0].url);
-
       this.player.play(resource);
     }
+  }
+
+  getPlayer() {
+    return this.player;
   }
 }
 

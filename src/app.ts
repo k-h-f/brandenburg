@@ -26,7 +26,7 @@ const client = new Client({
 const eventHandler = new EventHandler(client);
 eventHandler.initEvents();
 
-const player = new Player();
+export const player = new Player();
 player.subscribeToMusicQueue();
 
 // Login to Discord with your client's token

@@ -1,17 +1,15 @@
 import { Subject } from 'rxjs';
-import internal, { Readable } from 'stream';
+import internal from 'stream';
 
 interface MusicRequest {
   url: string;
   userId: string;
   guildId: string;
   stream: internal.Readable;
-  //create a stream value here
 }
 
 interface Target {
   newValue: MusicRequest;
-  skip?: boolean;
 }
 
 class MusicQueue {
